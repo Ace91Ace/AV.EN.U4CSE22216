@@ -1,2 +1,4 @@
 Screenchots
-![image](https://github.com/user-attachments/assets/71d51678-40ef-4f49-a234-36b2410ca6aa)
+*Q1. Fetching stock prize of TESLA*
+![image](https://github.com/user-attachments/assets/095cf421-fc83-4b28-a0f7-13832599384f)
+
