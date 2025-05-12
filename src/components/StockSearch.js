@@ -10,7 +10,8 @@ import {
   Typography, 
   CircularProgress,
   Stack,
-  Slider
+  Paper,
+  InputAdornment
 } from '@mui/material';
 import { getStocks } from '../api';
 
@@ -39,9 +40,13 @@ const StockSearch = ({ onStockSelect, onTimeFrameChange, selectedStock, timeFram
     fetchStocks();
   }, []);
   
-  // Time frame selection
-  const handleTimeChange = (event, newValue) => {
-    onTimeFrameChange(newValue);
+  // Time frame input change
+  const handleTimeChange = (event) => {
+    const value = parseInt(event.target.value, 10);
+    // Only update if it's a valid number between 5 and 60
+    if (!isNaN(value) && value >= 5 && value <= 60) {
+      onTimeFrameChange(value);
+    }
   };
   
   // Stock selection
@@ -50,24 +55,55 @@ const StockSearch = ({ onStockSelect, onTimeFrameChange, selectedStock, timeFram
   };
   
   if (loading) {
-    return <Box display="flex" justifyContent="center" my={3}><CircularProgress /></Box>;
+    return <Box display="flex" justifyContent="center" my={3}><CircularProgress sx={{ color: '#00ff84' }} /></Box>;
   }
   
   if (error) {
-    return <Typography color="error" align="center" my={3}>{error}</Typography>;
+    return <Typography color="#ff5555" align="center" my={3}>{error}</Typography>;
   }
   
   return (
-    <Box sx={{ mb: 4 }}>
+    <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: '10px', border: '1px solid rgba(0, 255, 132, 0.2)' }}>
+      <Typography variant="h6" gutterBottom sx={{ color: '#00ff84', mb: 2 }}>
+        Stock Selection
+      </Typography>
       <Stack spacing={3}>
-        <FormControl fullWidth>
-          <InputLabel id="stock-select-label">Select Stock</InputLabel>
+        <FormControl fullWidth variant="outlined">
+          <InputLabel id="stock-select-label" sx={{ color: '#b0b0b0' }}>Select Stock</InputLabel>
           <Select
             labelId="stock-select-label"
             id="stock-select"
             value={selectedStock || ''}
             onChange={handleStockChange}
             label="Select Stock"
+            sx={{
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'rgba(0, 255, 132, 0.3)',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'rgba(0, 255, 132, 0.5)',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#00ff84',
+              }
+            }}
+            MenuProps={{
+              PaperProps: {
+                sx: {
+                  bgcolor: '#1e1e1e',
+                  border: '1px solid rgba(0, 255, 132, 0.2)',
+                  '& .MuiMenuItem-root:hover': {
+                    bgcolor: 'rgba(0, 255, 132, 0.1)',
+                  },
+                  '& .MuiMenuItem-root.Mui-selected': {
+                    bgcolor: 'rgba(0, 255, 132, 0.2)',
+                    '&:hover': {
+                      bgcolor: 'rgba(0, 255, 132, 0.3)',
+                    }
+                  }
+                }
+              }
+            }}
           >
             {Object.entries(stocks).map(([name, ticker]) => (
               <MenuItem key={ticker} value={ticker}>
@@ -78,22 +114,55 @@ const StockSearch = ({ onStockSelect, onTimeFrameChange, selectedStock, timeFram
         </FormControl>
         
         <Box>
-          <Typography id="time-frame-slider" gutterBottom>
-            Time Frame (minutes): {timeFrame}
+          <Typography gutterBottom sx={{ color: '#e0e0e0', mb: 1 }}>
+            Time Frame
           </Typography>
-          <Slider
-            aria-labelledby="time-frame-slider"
+          <TextField
+            fullWidth
+            id="time-frame-input"
+            label="Minutes"
+            type="number"
             value={timeFrame}
             onChange={handleTimeChange}
-            valueLabelDisplay="auto"
-            step={5}
-            marks
-            min={5}
-            max={60}
+            InputProps={{
+              inputProps: { 
+                min: 5, 
+                max: 60,
+                step: 5
+              },
+              endAdornment: <InputAdornment position="end" sx={{ color: '#b0b0b0' }}>minutes</InputAdornment>,
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: 'rgba(0, 255, 132, 0.3)',
+                },
+                '&:hover fieldset': {
+                  borderColor: 'rgba(0, 255, 132, 0.5)',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: '#00ff84',
+                },
+              },
+              '& .MuiInputLabel-root': {
+                color: '#b0b0b0',
+                '&.Mui-focused': {
+                  color: '#00ff84',
+                },
+              },
+              '& input': {
+                color: '#00ff84',
+                fontWeight: 'bold',
+              }
+            }}
+            helperText="Enter a value between 5 and 60 minutes"
+            FormHelperTextProps={{
+              sx: { color: 'rgba(0, 255, 132, 0.7)' }
+            }}
           />
         </Box>
       </Stack>
-    </Box>
+    </Paper>
   );
 };
 

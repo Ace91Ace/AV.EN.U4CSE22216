@@ -3,6 +3,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--primary-dark);
+  color: var(--text-primary);
 }
 
 .App-logo {
@@ -17,13 +19,14 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: var(--primary-light);
   padding: 20px;
-  color: white;
+  color: var(--accent-green);
+  border-bottom: 2px solid var(--accent-green);
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--accent-green);
 }
 
 @keyframes App-logo-spin {
@@ -39,11 +42,14 @@
 .stock-card {
   transition: all 0.3s ease;
   cursor: pointer;
+  background-color: var(--primary-light);
+  border: 1px solid var(--accent-green-dark);
 }
 
 .stock-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(0, 255, 132, 0.2);
+  border-color: var(--accent-green);
 }
 
 .correlation-cell {
@@ -52,6 +58,7 @@
 
 .correlation-cell:hover {
   transform: scale(1.05);
+  background-color: rgba(0, 255, 132, 0.1);
 }
 
 /* Responsiveness */
@@ -63,4 +70,36 @@
   h1 {
     font-size: 1.5rem;
   }
+}
+
+/* MUI Components Override */
+.MuiPaper-root {
+  background-color: var(--primary-light) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid rgba(0, 255, 132, 0.1);
+}
+
+.MuiButton-contained {
+  background-color: var(--accent-green-dark) !important;
+  color: var(--primary-dark) !important;
+}
+
+.MuiButton-contained:hover {
+  background-color: var(--accent-green) !important;
+}
+
+.MuiSelect-select, .MuiInputBase-input {
+  color: var(--text-primary) !important;
+}
+
+.MuiInputLabel-root {
+  color: var(--text-secondary) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+  border-color: var(--accent-green-dark) !important;
+}
+
+.MuiSlider-track, .MuiSlider-thumb {
+  color: var(--accent-green) !important;
 }

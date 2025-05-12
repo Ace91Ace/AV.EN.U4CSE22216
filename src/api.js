@@ -5,12 +5,39 @@ const BASE_URL = 'http://20.244.56.144/evaluation-service';
 // Store a default token
 const DEFAULT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJNYXBDbGFpbXMiOnsiZXhwIjoxNzQ3MDYwNzQzLCJpYXQiOjE3NDcwNjA0NDMsImlzcyI6IkFmZm9yZG1lZCIsImp0aSI6IjdhMWMyMDAwLTU2ZTktNDY1MS1iOGQzLWQxMzg2YTZmZGNkZSIsInN1YiI6ImZ0dHRtaGgyNTNAZ21haWwuY29tIn0sImVtYWlsIjoiZnR0dG1oaDI1M0BnbWFpbC5jb20iLCJuYW1lIjoiZmlyZG91cyBmYXRpbWFoIiwicm9sbE5vIjoiYXYuZW4udTRjc2UyMjI1MyIsImFjY2Vzc0NvZGUiOiJTd3V1S0UiLCJjbGllbnRJRCI6IjdhMWMyMDAwLTU2ZTktNDY1MS1iOGQzLWQxMzg2YTZmZGNkZSIsImNsaWVudFNlY3JldCI6Ilpwa01xRndqdW1DZXV1WGQifQ.bwSK_R-p96vq99Rq-1XSmVRmZKN9ApGa0oOgZnR_eOY";
 
+// Check if localStorage is available
+const isLocalStorageAvailable = () => {
+  try {
+    const testKey = '__storage_test__';
+    window.localStorage.setItem(testKey, testKey);
+    window.localStorage.removeItem(testKey);
+    return true;
+  } catch (e) {
+    return false;
+  }
+};
+
+// Safe localStorage getItem
+const safeGetItem = (key, defaultValue) => {
+  if (isLocalStorageAvailable()) {
+    return localStorage.getItem(key) || defaultValue;
+  }
+  return defaultValue;
+};
+
+// Safe localStorage setItem
+const safeSetItem = (key, value) => {
+  if (isLocalStorageAvailable()) {
+    localStorage.setItem(key, value);
+  }
+};
+
 // Store the token after authentication - use default if none in localStorage
-let accessToken = localStorage.getItem('accessToken') || DEFAULT_TOKEN;
+let accessToken = safeGetItem('accessToken', DEFAULT_TOKEN);
 
 // Initialize localStorage with the default token if empty
-if (!localStorage.getItem('accessToken')) {
-  localStorage.setItem('accessToken', DEFAULT_TOKEN);
+if (safeGetItem('accessToken', null) === null) {
+  safeSetItem('accessToken', DEFAULT_TOKEN);
 }
 
 // Configure axios defaults
@@ -108,7 +135,7 @@ export const authenticate = async (authData) => {
     
     // Store token for future requests
     accessToken = token;
-    localStorage.setItem('accessToken', token);
+    safeSetItem('accessToken', token);
     
     return token;
   } catch (error) {
@@ -123,7 +150,7 @@ export const authenticate = async (authData) => {
  */
 export const setAccessToken = (token) => {
   accessToken = token;
-  localStorage.setItem('accessToken', token);
+  safeSetItem('accessToken', token);
 };
 
 /**

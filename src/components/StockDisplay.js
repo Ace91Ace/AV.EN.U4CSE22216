@@ -44,21 +44,36 @@ const StockDisplay = ({ stockData, stockName }) => {
   // For a single data point, we can't calculate meaningful changes
   if (dataArray.length === 1) {
     return (
-      <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
-        <Typography variant="h6" gutterBottom>Stock Details</Typography>
+      <Paper elevation={3} sx={{ 
+        p: 3, 
+        mt: 2, 
+        borderRadius: '10px',
+        border: '1px solid rgba(0, 255, 132, 0.2)'
+      }}>
+        <Typography variant="h6" sx={{ color: '#00ff84', mb: 2 }}>Stock Details</Typography>
         
         <Grid container spacing={2} sx={{ mt: 1 }}>
           <Grid item xs={12} sm={6}>
-            <Box>
+            <Box sx={{ 
+              p: 2, 
+              borderRadius: '8px', 
+              bgcolor: 'rgba(0, 255, 132, 0.05)'
+            }}>
               <Typography variant="subtitle2" color="textSecondary">Current Price</Typography>
-              <Typography variant="h6">${dataArray[0].price.toFixed(2)}</Typography>
+              <Typography variant="h5" sx={{ color: '#00ff84', fontWeight: 'bold' }}>
+                ${dataArray[0].price.toFixed(2)}
+              </Typography>
             </Box>
           </Grid>
           
           <Grid item xs={12} sm={6}>
-            <Box>
+            <Box sx={{ 
+              p: 2, 
+              borderRadius: '8px', 
+              bgcolor: 'rgba(0, 255, 132, 0.05)'
+            }}>
               <Typography variant="subtitle2" color="textSecondary">Last Updated</Typography>
-              <Typography variant="body1">
+              <Typography variant="body1" sx={{ color: '#e0e0e0' }}>
                 {new Date(dataArray[0].lastUpdatedAt).toLocaleString()}
               </Typography>
             </Box>
@@ -79,50 +94,93 @@ const StockDisplay = ({ stockData, stockName }) => {
   const percentChange = firstPrice !== 0 ? (priceChange / firstPrice) * 100 : 0;
   
   return (
-    <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
-      <Typography variant="h6" gutterBottom>Stock Statistics</Typography>
+    <Paper elevation={3} sx={{ 
+      p: 3, 
+      mt: 2, 
+      borderRadius: '10px',
+      border: '1px solid rgba(0, 255, 132, 0.2)'
+    }}>
+      <Typography variant="h6" sx={{ color: '#00ff84', mb: 2 }}>Stock Statistics</Typography>
       
       <Grid container spacing={2} sx={{ mt: 1 }}>
         <Grid item xs={12} sm={6}>
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ 
+            mb: 2, 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Average Price</Typography>
-            <Typography variant="h6">${avgPrice.toFixed(2)}</Typography>
+            <Typography variant="h6" sx={{ color: '#00ff84', fontWeight: 'bold' }}>
+              ${avgPrice.toFixed(2)}
+            </Typography>
           </Box>
           
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ 
+            mb: 2, 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Standard Deviation</Typography>
-            <Typography variant="h6">${stdDev.toFixed(2)}</Typography>
+            <Typography variant="h6" sx={{ color: '#e0e0e0' }}>
+              ${stdDev.toFixed(2)}
+            </Typography>
           </Box>
         </Grid>
         
         <Grid item xs={12} sm={6}>
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ 
+            mb: 2, 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Price Change</Typography>
             <Box display="flex" alignItems="center">
-              <Typography variant="h6">${priceChange.toFixed(2)}</Typography>
+              <Typography variant="h6" sx={{ color: percentChange >= 0 ? '#00ff84' : '#ff5555' }}>
+                ${priceChange.toFixed(2)}
+              </Typography>
               <Chip 
                 label={`${percentChange.toFixed(2)}%`} 
-                color={percentChange >= 0 ? "success" : "error"} 
+                sx={{ 
+                  ml: 1,
+                  bgcolor: percentChange >= 0 ? 'rgba(0, 255, 132, 0.2)' : 'rgba(255, 85, 85, 0.2)',
+                  color: percentChange >= 0 ? '#00ff84' : '#ff5555',
+                  border: `1px solid ${percentChange >= 0 ? '#00ff84' : '#ff5555'}`
+                }}
                 size="small"
-                sx={{ ml: 1 }}
               />
             </Box>
           </Box>
           
-          <Box sx={{ mb: 2 }}>
+          <Box sx={{ 
+            mb: 2, 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Data Points</Typography>
-            <Typography variant="h6">{dataArray.length}</Typography>
+            <Typography variant="h6" sx={{ color: '#e0e0e0' }}>
+              {dataArray.length}
+            </Typography>
           </Box>
         </Grid>
       </Grid>
       
-      <Divider sx={{ my: 2 }} />
+      <Divider sx={{ my: 2, bgcolor: 'rgba(0, 255, 132, 0.2)' }} />
       
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <Box>
+          <Box sx={{ 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Lowest Price</Typography>
-            <Typography variant="body1">${minPrice.toFixed(2)}</Typography>
+            <Typography variant="body1" sx={{ color: '#ff5555', fontWeight: 'bold' }}>
+              ${minPrice.toFixed(2)}
+            </Typography>
             <Typography variant="caption" color="textSecondary">
               {new Date(minTimestamp).toLocaleString()}
             </Typography>
@@ -130,9 +188,15 @@ const StockDisplay = ({ stockData, stockName }) => {
         </Grid>
         
         <Grid item xs={12} sm={6}>
-          <Box>
+          <Box sx={{ 
+            p: 2, 
+            borderRadius: '8px', 
+            bgcolor: 'rgba(0, 255, 132, 0.05)'
+          }}>
             <Typography variant="subtitle2" color="textSecondary">Highest Price</Typography>
-            <Typography variant="body1">${maxPrice.toFixed(2)}</Typography>
+            <Typography variant="body1" sx={{ color: '#00ff84', fontWeight: 'bold' }}>
+              ${maxPrice.toFixed(2)}
+            </Typography>
             <Typography variant="caption" color="textSecondary">
               {new Date(maxTimestamp).toLocaleString()}
             </Typography>

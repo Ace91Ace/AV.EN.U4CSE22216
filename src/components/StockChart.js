@@ -76,16 +76,19 @@ const StockChart = ({ stockData, stockName }) => {
         {
           label: 'Stock Price',
           data: prices,
-          borderColor: 'rgba(75, 192, 192, 1)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          pointBackgroundColor: 'rgba(75, 192, 192, 1)',
+          borderColor: '#00ff84',
+          backgroundColor: 'rgba(0, 255, 132, 0.1)',
+          pointBackgroundColor: '#00ff84',
+          pointBorderColor: '#121212',
+          pointHoverBackgroundColor: '#121212',
+          pointHoverBorderColor: '#00ff84',
           tension: 0.1,
           fill: true,
         },
         {
           label: 'Average Price',
           data: averageLine,
-          borderColor: 'rgba(255, 99, 132, 1)',
+          borderColor: '#ffffff',
           borderWidth: 2,
           borderDash: [5, 5],
           pointRadius: 0,
@@ -101,8 +104,20 @@ const StockChart = ({ stockData, stockName }) => {
     plugins: {
       legend: {
         position: 'top',
+        labels: {
+          color: '#e0e0e0',
+          font: {
+            family: "'Roboto', sans-serif",
+            size: 12
+          }
+        }
       },
       tooltip: {
+        backgroundColor: '#1e1e1e',
+        titleColor: '#00ff84',
+        bodyColor: '#e0e0e0',
+        borderColor: '#00ff84',
+        borderWidth: 1,
         callbacks: {
           label: function(context) {
             const label = context.dataset.label || '';
@@ -118,15 +133,37 @@ const StockChart = ({ stockData, stockName }) => {
     },
     scales: {
       y: {
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: '#b0b0b0',
+        },
         title: {
           display: true,
-          text: 'Price ($)'
+          text: 'Price ($)',
+          color: '#e0e0e0',
+          font: {
+            family: "'Roboto', sans-serif",
+            size: 12
+          }
         }
       },
       x: {
+        grid: {
+          color: 'rgba(255, 255, 255, 0.1)',
+        },
+        ticks: {
+          color: '#b0b0b0',
+        },
         title: {
           display: true,
-          text: 'Time'
+          text: 'Time',
+          color: '#e0e0e0',
+          font: {
+            family: "'Roboto', sans-serif",
+            size: 12
+          }
         }
       }
     }
@@ -134,7 +171,7 @@ const StockChart = ({ stockData, stockName }) => {
   
   if (!stockData) {
     return (
-      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }}>
         <Typography variant="body1">Please select a stock to view price chart</Typography>
       </Paper>
     );
@@ -143,9 +180,9 @@ const StockChart = ({ stockData, stockName }) => {
   // Display current price for single data point
   if (stockData.stock && !Array.isArray(stockData)) {
     return (
-      <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
+      <Paper elevation={3} sx={{ p: 3, mt: 2, borderRadius: '10px' }}>
         <Typography variant="h6" gutterBottom>{stockName || 'Stock'} - Current Price</Typography>
-        <Typography variant="h4">${stockData.stock.price.toFixed(2)}</Typography>
+        <Typography variant="h4" sx={{ color: '#00ff84', fontWeight: 'bold' }}>${stockData.stock.price.toFixed(2)}</Typography>
         <Typography variant="body2" color="textSecondary">
           Last Updated: {new Date(stockData.stock.lastUpdatedAt).toLocaleString()}
         </Typography>
@@ -155,7 +192,7 @@ const StockChart = ({ stockData, stockName }) => {
   
   if (Array.isArray(stockData) && stockData.length === 0) {
     return (
-      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }}>
         <Typography variant="body1">No data available for the selected time period</Typography>
       </Paper>
     );
@@ -163,16 +200,16 @@ const StockChart = ({ stockData, stockName }) => {
   
   if (!chartData) {
     return (
-      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <CircularProgress />
+      <Paper elevation={3} sx={{ p: 3, mt: 2, height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '10px' }}>
+        <CircularProgress sx={{ color: '#00ff84' }} />
       </Paper>
     );
   }
   
   return (
-    <Paper elevation={3} sx={{ p: 3, mt: 2 }}>
+    <Paper elevation={3} sx={{ p: 3, mt: 2, borderRadius: '10px' }}>
       <Typography variant="h6" gutterBottom>{stockName || 'Stock'} Price Chart</Typography>
-      <Typography variant="subtitle1" sx={{ mb: 2 }}>
+      <Typography variant="subtitle1" sx={{ mb: 2, color: '#00ff84' }}>
         Average Price: ${avgPrice.toFixed(2)}
       </Typography>
       <Box sx={{ height: '400px' }}>
